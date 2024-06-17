@@ -26,11 +26,11 @@ module.exports.createListing=(async (req, res) => {
     newListing.image.url=req.file.path;
     newListing.image.filename=req.file.filename;    
     newListing.geometry=response.body.features[0].geometry
-   const savedListing= await newListing.save();
-   console.log(savedListing);
+    await newListing.save();
+//    console.log(savedListing);
     req.flash("success","New Listing Created Successfully!");
     res.redirect('/listings');
-    console.log(newListing);
+    // console.log(newListing);
 });
 
 module.exports.showListing=(async (req, res) => {
@@ -64,11 +64,9 @@ module.exports.getEditForm=(async (req, res) => {
 });
 
 module.exports.updateListing=(async (req, res) => {
-    const { id } = req.params;
-    
-    
+    const { id } = req.params;    
     let listing=await Listing.findByIdAndUpdate(id, { ...req.body.Listing });
-    console.log(req.file)
+    // console.log(req.file);
     if(typeof req.file  !== "undefined"){
     listing.image.url=req.file.path;
     listing.image.filename=req.file.filename;
@@ -82,8 +80,8 @@ module.exports.updateListing=(async (req, res) => {
 
 module.exports.destroyListing=(async (req, res) => {
     const { id } = req.params;
-    const deletedListing = await Listing.findByIdAndDelete(id);
+     await Listing.findByIdAndDelete(id);
     req.flash("error","Listing Deleted Successfully!");
-    console.log(deletedListing);
+    // console.log(deletedListing);
     res.redirect('/listings');
 });
